@@ -234,11 +234,6 @@ function App() {
           </div>
         )}
 
-        {!API_KEY && (
-          <div className="info-message">
-            <p>💡 현재 더미 데이터를 사용 중입니다. 실제 API를 사용하려면 .env 파일에 VITE_REB_API_KEY를 설정하세요.</p>
-          </div>
-        )}
 
         {loading && (
           <div className="loading">
