@@ -18,6 +18,7 @@ interface SeoulMapProps {
   selectedGu: string | null;
   onGuHover: (guName: string | null) => void;
   onGuClick?: (guName: string) => void;
+  averageValue?: number; // 서울 전체 평균
 }
 
 // 서울시 중심 좌표
@@ -93,11 +94,12 @@ function getCentroid(coords: any[]): [number, number] {
   return count > 0 ? [latSum / count, lngSum / count] : [0, 0];
 }
 
-// 텍스트 레이블 아이콘 생성
-function createLabelIcon(text: string, value: number, isHovered: boolean): L.DivIcon {
+// 텍스트 레이블 아이콘 생성 (구 이름 포함)
+function createLabelIcon(guName: string, value: number, isHovered: boolean): L.DivIcon {
   const color = value >= 0 ? '#e31a1c' : '#1f78b4';
   const bgColor = isHovered ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.9)';
   const borderColor = isHovered ? '#333' : '#666';
+  const valueText = `${value >= 0 ? '+' : ''}${value.toFixed(1)}%`;
   
   return L.divIcon({
     html: `
@@ -105,26 +107,56 @@ function createLabelIcon(text: string, value: number, isHovered: boolean): L.Div
         background: ${bgColor};
         border: 2px solid ${borderColor};
         border-radius: 4px;
-        padding: 4px 8px;
-        font-size: 12px;
+        padding: 4px 6px;
+        font-size: 11px;
         font-weight: 600;
-        color: ${color};
         text-align: center;
         white-space: nowrap;
         box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         pointer-events: none;
+        line-height: 1.2;
       ">
-        ${text}
+        <div style="font-size: 10px; color: #333; margin-bottom: 2px;">${guName}</div>
+        <div style="color: ${color}; font-size: 12px;">${valueText}</div>
       </div>
     `,
     className: 'gu-label',
-    iconSize: [60, 24],
-    iconAnchor: [30, 12],
+    iconSize: [70, 35],
+    iconAnchor: [35, 17],
+  });
+}
+
+// 서울 전체 평균 레이블 아이콘 생성
+function createAverageLabelIcon(averageValue: number): L.DivIcon {
+  const color = averageValue >= 0 ? '#e31a1c' : '#1f78b4';
+  const valueText = `${averageValue >= 0 ? '+' : ''}${averageValue.toFixed(2)}%`;
+  
+  return L.divIcon({
+    html: `
+      <div style="
+        background: rgba(255, 255, 255, 0.95);
+        border: 3px solid ${color};
+        border-radius: 6px;
+        padding: 8px 12px;
+        font-size: 13px;
+        font-weight: 700;
+        text-align: center;
+        white-space: nowrap;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+        pointer-events: none;
+      ">
+        <div style="font-size: 11px; color: #666; margin-bottom: 4px;">서울 전체 평균</div>
+        <div style="color: ${color}; font-size: 16px;">${valueText}</div>
+      </div>
+    `,
+    className: 'average-label',
+    iconSize: [120, 50],
+    iconAnchor: [60, 25],
   });
 }
 
 // GeoJSON 이벤트 핸들러
-function GeoJsonLayer({ data, hoveredGu, selectedGu, onGuHover, onGuClick }: SeoulMapProps) {
+function GeoJsonLayer({ data, hoveredGu, selectedGu, onGuHover, onGuClick, averageValue }: SeoulMapProps) {
   const [labels, setLabels] = useState<Array<{ guName: string; position: [number, number]; value: number }>>([]);
 
   // onEachFeature를 useCallback으로 감싸서 렌더링 중 상태 업데이트 문제 해결
@@ -266,8 +298,7 @@ function GeoJsonLayer({ data, hoveredGu, selectedGu, onGuHover, onGuClick }: Seo
     return labels.map((label) => {
       const isHovered = hoveredGu === label.guName;
       const isSelected = selectedGu === label.guName;
-      const labelText = `${label.value >= 0 ? '+' : ''}${label.value.toFixed(1)}%`;
-      const icon = createLabelIcon(labelText, label.value, isHovered || isSelected);
+      const icon = createLabelIcon(label.guName, label.value, isHovered || isSelected);
       
       return (
         <Marker
@@ -280,6 +311,25 @@ function GeoJsonLayer({ data, hoveredGu, selectedGu, onGuHover, onGuClick }: Seo
       );
     });
   }, [labels, hoveredGu, selectedGu]);
+
+  // 서울 전체 평균 레이블 (지도 우측 상단)
+  const averageMarker = useMemo(() => {
+    if (averageValue === undefined || isNaN(averageValue)) return null;
+    
+    // 서울시 중심 좌표 기준 우측 상단
+    const averagePosition: [number, number] = [37.65, 127.15];
+    const icon = createAverageLabelIcon(averageValue);
+    
+    return (
+      <Marker
+        key="seoul-average"
+        position={averagePosition}
+        icon={icon}
+        interactive={false}
+        zIndexOffset={2000}
+      />
+    );
+  }, [averageValue]);
 
   // GeoJSON 로딩 중일 때
   if (geoJsonLoading) {
@@ -307,11 +357,13 @@ function GeoJsonLayer({ data, hoveredGu, selectedGu, onGuHover, onGuClick }: Seo
       )}
       {/* 각 구에 상승률 레이블 표시 */}
       {labelMarkers}
+      {/* 서울 전체 평균 표시 */}
+      {averageMarker}
     </>
   );
 }
 
-function SeoulMap({ data, hoveredGu, selectedGu, onGuHover, onGuClick }: SeoulMapProps) {
+function SeoulMap({ data, hoveredGu, selectedGu, onGuHover, onGuClick, averageValue }: SeoulMapProps) {
   return (
     <div className="seoul-map-container">
       <MapContainer
@@ -340,6 +392,7 @@ function SeoulMap({ data, hoveredGu, selectedGu, onGuHover, onGuClick }: SeoulMa
           selectedGu={selectedGu}
           onGuHover={onGuHover}
           onGuClick={onGuClick}
+          averageValue={averageValue}
         />
       </MapContainer>
     </div>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import SeoulMap from './components/SeoulMap';
 import Tabs from './components/Tabs';
 import ComparisonInfo from './components/ComparisonInfo';
@@ -206,6 +206,15 @@ function App() {
 
   const selectedGuData: GuData | null = selectedGu ? data[selectedGu] || null : null;
 
+  // 서울 전체 평균 계산
+  const averageValue = useMemo(() => {
+    const guList = Object.values(data);
+    if (guList.length === 0) return undefined;
+    
+    const sum = guList.reduce((acc, gu) => acc + gu.currentValue, 0);
+    return sum / guList.length;
+  }, [data]);
+
   return (
     <div className="app">
       <header className="app-header">
@@ -244,6 +253,7 @@ function App() {
             selectedGu={selectedGu}
             onGuHover={setHoveredGu}
             onGuClick={setSelectedGu}
+            averageValue={averageValue}
           />
         </div>
 
