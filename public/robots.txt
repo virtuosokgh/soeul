@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://seoul-housing-price.vercel.app/sitemap.xml

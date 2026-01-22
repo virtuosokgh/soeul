@@ -1,0 +1,154 @@
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 32px 20px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.app-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.app-header .subtitle {
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+.app-main {
+  flex: 1;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.error-message {
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 20px;
+  color: #856404;
+}
+
+.error-hint {
+  font-size: 12px;
+  margin-top: 8px;
+  opacity: 0.8;
+}
+
+.info-message {
+  background: #d1ecf1;
+  border: 1px solid #bee5eb;
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  color: #0c5460;
+  font-size: 14px;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+
+.map-section {
+  margin-bottom: 20px;
+}
+
+.app-footer {
+  background: #f8f9fa;
+  padding: 20px;
+  text-align: center;
+  color: #666;
+  font-size: 12px;
+  margin-top: auto;
+}
+
+@media (max-width: 768px) {
+  .app-footer {
+    padding: 16px 12px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-footer {
+    padding: 12px 10px;
+    font-size: 10px;
+  }
+}
+
+/* 태블릿 */
+@media (max-width: 1024px) {
+  .app-main {
+    padding: 16px;
+  }
+  
+  .app-header {
+    padding: 24px 16px;
+  }
+  
+  .app-header h1 {
+    font-size: 28px;
+  }
+}
+
+/* 모바일 */
+@media (max-width: 768px) {
+  .app-header {
+    padding: 20px 12px;
+  }
+
+  .app-header h1 {
+    font-size: 22px;
+    margin-bottom: 6px;
+  }
+
+  .app-header .subtitle {
+    font-size: 14px;
+  }
+
+  .app-main {
+    padding: 12px 8px;
+  }
+  
+  .info-message {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  
+  .error-message {
+    padding: 12px;
+    font-size: 14px;
+  }
+}
+
+/* 작은 모바일 */
+@media (max-width: 480px) {
+  .app-header {
+    padding: 16px 10px;
+  }
+
+  .app-header h1 {
+    font-size: 20px;
+  }
+
+  .app-header .subtitle {
+    font-size: 13px;
+  }
+
+  .app-main {
+    padding: 10px 6px;
+  }
+}

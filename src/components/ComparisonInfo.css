@@ -1,0 +1,260 @@
+.comparison-info {
+  background: white;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.info-placeholder {
+  text-align: center;
+  color: #999;
+  padding: 40px 20px;
+  font-size: 14px;
+}
+
+.gu-name {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.current-value {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.current-value .label {
+  font-size: 14px;
+  color: #666;
+}
+
+.current-value .value {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.current-value .value.positive {
+  color: #e31a1c;
+}
+
+.current-value .value.negative {
+  color: #1f78b4;
+}
+
+.comparison-list h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.comparison-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.comparison-item {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 6px;
+}
+
+.comparison-label {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.comparison-value {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.comparison-value.positive {
+  color: #e31a1c;
+}
+
+.comparison-value.negative {
+  color: #1f78b4;
+}
+
+/* 히스토리 그래프 */
+.history-chart {
+  margin: 24px 0;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.history-chart h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.chart-tooltip {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.tooltip-label {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.tooltip-value {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.tooltip-value.positive {
+  color: #e31a1c;
+}
+
+.tooltip-value.negative {
+  color: #1f78b4;
+}
+
+/* 태블릿 */
+@media (max-width: 1024px) {
+  .history-chart {
+    margin: 20px 0;
+    padding: 14px;
+  }
+}
+
+/* 모바일 */
+@media (max-width: 768px) {
+  .history-chart {
+    margin: 16px 0;
+    padding: 12px;
+  }
+
+  .history-chart h3 {
+    font-size: 15px;
+    margin-bottom: 12px;
+  }
+}
+
+/* 작은 모바일 */
+@media (max-width: 480px) {
+  .history-chart {
+    margin: 12px 0;
+    padding: 10px;
+  }
+
+  .history-chart h3 {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+}
+
+/* 태블릿 */
+@media (max-width: 1024px) {
+  .comparison-info {
+    padding: 20px;
+  }
+  
+  .gu-name {
+    font-size: 22px;
+  }
+  
+  .current-value .value {
+    font-size: 24px;
+  }
+}
+
+/* 모바일 */
+@media (max-width: 768px) {
+  .comparison-info {
+    padding: 16px;
+    margin-top: 16px;
+  }
+
+  .gu-name {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+
+  .current-value {
+    padding: 12px;
+    margin-bottom: 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .current-value .label {
+    font-size: 13px;
+  }
+
+  .current-value .value {
+    font-size: 24px;
+  }
+
+  .comparison-list h3 {
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
+
+  .comparison-items {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .comparison-item {
+    padding: 10px;
+  }
+
+  .comparison-label {
+    font-size: 11px;
+  }
+
+  .comparison-value {
+    font-size: 16px;
+  }
+  
+  .info-placeholder {
+    padding: 30px 15px;
+    font-size: 13px;
+  }
+}
+
+/* 작은 모바일 */
+@media (max-width: 480px) {
+  .comparison-info {
+    padding: 12px;
+  }
+
+  .gu-name {
+    font-size: 18px;
+  }
+
+  .current-value .value {
+    font-size: 22px;
+  }
+
+  .comparison-items {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .comparison-value {
+    font-size: 15px;
+  }
+}

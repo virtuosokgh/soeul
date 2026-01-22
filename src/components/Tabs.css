@@ -1,0 +1,81 @@
+.tabs-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  background: white;
+  padding: 8px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tab-button {
+  padding: 12px 24px;
+  border: none;
+  background: transparent;
+  color: #666;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.tab-button:hover {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.tab-button.active {
+  background: #007bff;
+  color: white;
+  font-weight: 600;
+}
+
+.tab-button.active:hover {
+  background: #0056b3;
+}
+
+/* 태블릿 */
+@media (max-width: 1024px) {
+  .tabs {
+    padding: 6px;
+    gap: 6px;
+  }
+  
+  .tab-button {
+    padding: 10px 20px;
+    font-size: 15px;
+  }
+}
+
+/* 모바일 */
+@media (max-width: 768px) {
+  .tabs {
+    padding: 4px;
+    gap: 4px;
+  }
+
+  .tab-button {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+}
+
+/* 작은 모바일 */
+@media (max-width: 480px) {
+  .tabs {
+    padding: 3px;
+    gap: 3px;
+  }
+
+  .tab-button {
+    padding: 8px 12px;
+    font-size: 13px;
+    border-radius: 4px;
+  }
+}

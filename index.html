@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    
+    <!-- Primary Meta Tags -->
+    <title>서울 집값 상승률 | 서울시 구별 부동산 가격 추이 실시간 확인</title>
+    <meta name="title" content="서울 집값 상승률 | 서울시 구별 부동산 가격 추이 실시간 확인" />
+    <meta name="description" content="서울시 25개 구별 집값 상승률을 지도로 한눈에 확인하세요. 일/주/월/연 단위로 전일, 전주, 전월, 전년 대비 상승률을 비교할 수 있습니다. 부동산 통계원 데이터 기반 실시간 집값 정보 제공." />
+    <meta name="keywords" content="서울 집값, 서울 부동산, 집값 상승률, 서울시 집값, 부동산 가격, 서울 아파트 가격, 서울 주택 가격, 부동산 통계, 서울 집값 지도, 구별 집값" />
+    <meta name="author" content="서울 집값 상승률" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="Korean" />
+    <meta name="revisit-after" content="7 days" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://seoul-housing-price.vercel.app/" />
+    <meta property="og:title" content="서울 집값 상승률 | 서울시 구별 부동산 가격 추이 실시간 확인" />
+    <meta property="og:description" content="서울시 25개 구별 집값 상승률을 지도로 한눈에 확인하세요. 일/주/월/연 단위로 전일, 전주, 전월, 전년 대비 상승률을 비교할 수 있습니다." />
+    <meta property="og:image" content="https://seoul-housing-price.vercel.app/og-image.png" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:site_name" content="서울 집값 상승률" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://seoul-housing-price.vercel.app/" />
+    <meta property="twitter:title" content="서울 집값 상승률 | 서울시 구별 부동산 가격 추이 실시간 확인" />
+    <meta property="twitter:description" content="서울시 25개 구별 집값 상승률을 지도로 한눈에 확인하세요. 일/주/월/연 단위로 전일, 전주, 전월, 전년 대비 상승률을 비교할 수 있습니다." />
+    <meta property="twitter:image" content="https://seoul-housing-price.vercel.app/og-image.png" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://unpkg.com" />
+    <link rel="preconnect" href="https://www.reb.or.kr" />
+    <link rel="dns-prefetch" href="https://unpkg.com" />
+    <link rel="dns-prefetch" href="https://www.reb.or.kr" />
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "서울 집값 상승률",
+      "description": "서울시 25개 구별 집값 상승률을 지도로 한눈에 확인하는 웹 애플리케이션",
+      "url": "https://seoul-housing-price.vercel.app/",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "KRW"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.5",
+        "ratingCount": "100"
+      }
+    }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
