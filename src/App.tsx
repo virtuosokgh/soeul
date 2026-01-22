@@ -33,17 +33,17 @@ function App() {
     const baseRange = Math.max(Math.abs(currentValue) * 0.8, 10); // 현재 값의 80% 또는 최소 10%
     const trendDirection = currentValue >= 0 ? 1 : -1; // 상승/하락 트렌드
     
-    // 과거부터 현재까지의 값들을 생성 (역순으로)
+    // 과거부터 현재까지의 값들을 생성 (정순: 과거 -> 현재)
     const values: number[] = [];
     
-    // 현재 값부터 시작해서 과거로 거슬러 올라가며 값 생성
-    for (let i = 0; i <= 5; i++) {
+    // 과거 5개 기간부터 현재까지 값 생성
+    for (let i = 5; i >= 0; i--) {
       if (i === 0) {
-        // 현재 값
-        values.push(currentValue);
+        // 현재 값 (항상 마지막에 추가되어 values[5]가 됨)
+        // 나중에 정순으로 만들기 위해 일단 빈 자리로 두고 나중에 추가
       } else {
         // 과거 값: 현재에서 멀어질수록 더 큰 차이 (극명하게)
-        const timeFactor = i / 5; // 0.2, 0.4, 0.6, 0.8, 1.0
+        const timeFactor = i / 5; // 1.0, 0.8, 0.6, 0.4, 0.2
         const randomVariation = (seededRandom(seed + i) - 0.5) * 2; // -1 ~ 1 (일관된 값)
         
         // 더 극명한 변동을 위해 큰 계수 사용
@@ -60,13 +60,14 @@ function App() {
       }
     }
     
-    // 역순으로 정렬 (과거 -> 현재)
-    values.reverse();
+    // 현재 값을 마지막에 추가 (values[5] = currentValue)
+    values.push(currentValue);
     
-    // 날짜 라벨 생성
+    // 날짜 라벨 생성 (과거 -> 현재 순서)
     for (let i = 5; i >= 0; i--) {
       let dateLabel = '';
       let dateStr = '';
+      const valueIndex = 5 - i; // values 배열 인덱스 (0=과거 5개 기간 전, 5=현재)
       
       if (i === 0) {
         // 현재
@@ -120,7 +121,7 @@ function App() {
       
       history.push({
         date: dateStr,
-        value: Number(values[i].toFixed(2)),
+        value: Number(values[valueIndex].toFixed(2)),
         label: dateLabel,
       });
     }
