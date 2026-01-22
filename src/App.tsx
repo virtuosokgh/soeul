@@ -17,8 +17,14 @@ function App() {
   // API 키는 환경변수에서 가져오거나 사용자가 입력하도록 설정
   const API_KEY = import.meta.env.VITE_REB_API_KEY || '';
 
-  // 히스토리 데이터 생성 함수 (과거 5개 기간)
-  const generateHistoryData = (currentValue: number, periodType: PeriodType): HistoryDataPoint[] => {
+  // 간단한 해시 함수로 일관된 랜덤 값 생성
+  const seededRandom = (seed: number): number => {
+    const x = Math.sin(seed) * 10000;
+    return x - Math.floor(x);
+  };
+
+  // 히스토리 데이터 생성 함수 (과거 5개 기간) - useCallback으로 메모이제이션
+  const generateHistoryData = useCallback((currentValue: number, periodType: PeriodType, seed: number): HistoryDataPoint[] => {
     const history: HistoryDataPoint[] = [];
     const now = new Date();
     
@@ -38,7 +44,7 @@ function App() {
       } else {
         // 과거 값: 현재에서 멀어질수록 더 큰 차이 (극명하게)
         const timeFactor = i / 5; // 0.2, 0.4, 0.6, 0.8, 1.0
-        const randomVariation = (Math.random() - 0.5) * 2; // -1 ~ 1
+        const randomVariation = (seededRandom(seed + i) - 0.5) * 2; // -1 ~ 1 (일관된 값)
         
         // 더 극명한 변동을 위해 큰 계수 사용
         const trendChange = -trendDirection * baseRange * timeFactor * 1.2; // 트렌드 반영 (1.2배)
@@ -120,25 +126,28 @@ function App() {
     }
     
     return history;
-  };
+  }, []);
 
   // 더미 데이터 생성 (API 키가 없을 때 사용) - useCallback으로 최적화
   const generateDummyData = useCallback(() => {
     const dummyData: HousingPriceData = {};
 
-    SEOUL_GU_LIST.forEach((guName) => {
-      // 랜덤한 상승률 생성 (-5% ~ 15%)
-      const currentValue = (Math.random() * 20 - 5);
+    SEOUL_GU_LIST.forEach((guName, index) => {
+      // 구 이름과 period를 기반으로 일관된 seed 생성
+      const seed = guName.charCodeAt(0) * 1000 + guName.charCodeAt(1) * 100 + period.charCodeAt(0) * 10 + index;
+      
+      // 일관된 랜덤 상승률 생성 (-5% ~ 15%)
+      const currentValue = (seededRandom(seed) * 20 - 5);
       
       const comparison: ComparisonData = {
-        전일: (Math.random() * 10 - 2),
-        전주: (Math.random() * 12 - 3),
-        전월: (Math.random() * 15 - 4),
-        전년: (Math.random() * 20 - 5),
+        전일: (seededRandom(seed + 1) * 10 - 2),
+        전주: (seededRandom(seed + 2) * 12 - 3),
+        전월: (seededRandom(seed + 3) * 15 - 4),
+        전년: (seededRandom(seed + 4) * 20 - 5),
       };
 
-      // 히스토리 데이터 생성
-      const history = generateHistoryData(currentValue, period);
+      // 히스토리 데이터 생성 (seed 전달)
+      const history = generateHistoryData(currentValue, period, seed);
 
       dummyData[guName] = {
         name: guName,
@@ -151,7 +160,7 @@ function App() {
     setData(dummyData);
   }, [period, generateHistoryData]);
 
-  // 데이터 로드 함수
+  // 데이터 로드 함수 - period가 변경될 때만 실행
   useEffect(() => {
     if (!API_KEY) {
       // API 키가 없어도 더미 데이터로 동작하므로 에러가 아닌 정보 메시지로 변경
@@ -162,7 +171,8 @@ function App() {
     }
 
     loadData();
-  }, [period, generateDummyData, API_KEY]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [period]);
 
   // 실제 API에서 데이터 로드
   const loadData = async () => {
