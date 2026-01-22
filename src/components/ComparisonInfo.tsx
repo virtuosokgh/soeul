@@ -8,7 +8,23 @@ interface ComparisonInfoProps {
   period: string;
 }
 
-export default function ComparisonInfo({ guData, period }: ComparisonInfoProps) {
+// 그래프 커스텀 툴팁 - 컴포넌트 외부로 이동하여 최적화
+const CustomTooltip = ({ active, payload }: any) => {
+  if (active && payload && payload.length) {
+    const data = payload[0].payload;
+    return (
+      <div className="chart-tooltip">
+        <p className="tooltip-label">{data.label}</p>
+        <p className={`tooltip-value ${data.value >= 0 ? 'positive' : 'negative'}`}>
+          {data.value >= 0 ? '+' : ''}{data.value.toFixed(2)}%
+        </p>
+      </div>
+    );
+  }
+  return null;
+};
+
+function ComparisonInfo({ guData, period }: ComparisonInfoProps) {
   if (!guData) {
     return (
       <div className="comparison-info">
@@ -19,21 +35,8 @@ export default function ComparisonInfo({ guData, period }: ComparisonInfoProps) 
 
   const { name, currentValue, comparison, history } = guData;
 
-  // 그래프 커스텀 툴팁
-  const CustomTooltip = ({ active, payload }: any) => {
-    if (active && payload && payload.length) {
-      const data = payload[0].payload;
-      return (
-        <div className="chart-tooltip">
-          <p className="tooltip-label">{data.label}</p>
-          <p className={`tooltip-value ${data.value >= 0 ? 'positive' : 'negative'}`}>
-            {data.value >= 0 ? '+' : ''}{data.value.toFixed(2)}%
-          </p>
-        </div>
-      );
-    }
-    return null;
-  };
+  // 그래프 색상 메모이제이션
+  const chartColor = useMemo(() => currentValue >= 0 ? "#e31a1c" : "#1f78b4", [currentValue]);
 
   return (
     <div className="comparison-info">

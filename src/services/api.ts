@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { PeriodType, HousingPriceData } from '../types';
+import type { PeriodType } from '../types';
 
 const API_BASE = 'https://www.reb.or.kr/r-one/openapi';
 
@@ -98,8 +98,8 @@ export async function fetchStatsTableData(
       itmCode: itmCode,
       date: date,
       type: 'json',
-      pIndex: 1,
-      pSize: 1000
+      pIndex: String(1),
+      pSize: String(1000)
     };
     
     if (areaCode) {
@@ -143,7 +143,7 @@ export function formatDate(date: Date, period: PeriodType): string {
 /**
  * 비교 날짜 계산
  */
-export function getComparisonDate(date: Date, period: PeriodType, comparisonType: '전일' | '전주' | '전월' | '전년'): Date {
+export function getComparisonDate(date: Date, _period: PeriodType, comparisonType: '전일' | '전주' | '전월' | '전년'): Date {
   const newDate = new Date(date);
   
   switch (comparisonType) {

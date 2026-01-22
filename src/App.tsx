@@ -1,14 +1,9 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import SeoulMap from './components/SeoulMap';
 import Tabs from './components/Tabs';
 import ComparisonInfo from './components/ComparisonInfo';
 import type { PeriodType, HousingPriceData, GuData, ComparisonData, HistoryDataPoint } from './types';
-import { 
-  formatDate, 
-  getComparisonDate, 
-  calculateGrowthRate,
-  SEOUL_GU_LIST 
-} from './services/api';
+import { SEOUL_GU_LIST } from './services/api';
 import './App.css';
 
 function App() {
@@ -22,21 +17,8 @@ function App() {
   // API 키는 환경변수에서 가져오거나 사용자가 입력하도록 설정
   const API_KEY = import.meta.env.VITE_REB_API_KEY || '';
 
-  // 데이터 로드 함수 - useMemo로 최적화
-  useEffect(() => {
-    if (!API_KEY) {
-      // API 키가 없어도 더미 데이터로 동작하므로 에러가 아닌 정보 메시지로 변경
-      setError(null);
-      // 개발용 더미 데이터 생성
-      generateDummyData();
-      return;
-    }
-
-    loadData();
-  }, [period, generateDummyData]);
-
-  // 히스토리 데이터 생성 (과거 5개 기간)
-  const generateHistoryData = (currentValue: number, period: PeriodType): HistoryDataPoint[] => {
+  // 히스토리 데이터 생성 함수 (과거 5개 기간)
+  const generateHistoryData = (currentValue: number, periodType: PeriodType): HistoryDataPoint[] => {
     const history: HistoryDataPoint[] = [];
     const now = new Date();
     
@@ -82,7 +64,7 @@ function App() {
       
       if (i === 0) {
         // 현재
-        switch (period) {
+        switch (periodType) {
           case '일':
             dateLabel = '오늘';
             dateStr = now.toLocaleDateString('ko-KR', { month: 'short', day: 'numeric' });
@@ -102,7 +84,7 @@ function App() {
         }
       } else {
         // 과거
-        switch (period) {
+        switch (periodType) {
           case '일':
             const dayDate = new Date(now);
             dayDate.setDate(dayDate.getDate() - i);
@@ -167,7 +149,20 @@ function App() {
     });
 
     setData(dummyData);
-  }, [period]);
+  }, [period, generateHistoryData]);
+
+  // 데이터 로드 함수
+  useEffect(() => {
+    if (!API_KEY) {
+      // API 키가 없어도 더미 데이터로 동작하므로 에러가 아닌 정보 메시지로 변경
+      setError(null);
+      // 개발용 더미 데이터 생성
+      generateDummyData();
+      return;
+    }
+
+    loadData();
+  }, [period, generateDummyData, API_KEY]);
 
   // 실제 API에서 데이터 로드
   const loadData = async () => {
